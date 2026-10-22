@@ -66,8 +66,10 @@
                   "",
                   "pm.test(\"Validate name and job from CSV\", function () {",
                   "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.name).to.eql(pm.iterationData.get(\"name\"));",
-                  "    pm.expect(jsonData.job).to.eql(pm.iterationData.get(\"job\"));",
+                  "    var expectedName = pm.iterationData.get(\"name\") || data.name;",
+                  "    var expectedJob = pm.iterationData.get(\"job\") || data.job;",
+                  "    pm.expect(jsonData.name).to.eql(expectedName);",
+                  "    pm.expect(jsonData.job).to.eql(expectedJob);",
                   "});",
                   "",
                   "var jsonData = pm.response.json();",
@@ -78,12 +80,7 @@
           ],
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{userToken}}"
-              }
-            ],
+            "header": [],
             "body": {
               "mode": "raw",
               "raw": "{\n    \"name\": \"{{name}}\",\n    \"job\": \"{{job}}\"\n}",
